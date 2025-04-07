@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
+import { useState } from 'react';
 export default function Header() {
+  const [communityOpen, setCommunityOpen] = useState(false);
   return (
     <header className="sticky top-0 z-50 bg-white shadow-sm">
       <div className="max-w-screen-xl mx-auto px-4 flex items-center justify-between h-16">
@@ -24,20 +26,35 @@ export default function Header() {
 
         {/* 가운데: 메뉴 */}
         <ul className="hidden md:flex items-center gap-6 text-sm text-gray-700">
-          <li className="hover:text-blue-400 transition-colors duration-300 flex justify-center items-center gap-1">
-            community <MdOutlineKeyboardArrowDown />
+          <div
+            onMouseEnter={() => setCommunityOpen(true)}
+            onMouseLeave={() => setCommunityOpen(false)}
+            className="relative"
+          >
+            <button className="hover:text-blue-400 transition-colors duration-300 cursor-pointer flex justify-center items-center gap-1">
+              Community <MdOutlineKeyboardArrowDown />
+            </button>
+
+            {communityOpen && (
+              <ul className="absolute top-full left-1/2 -translate-x-1/2 bg-white shadow-lg rounded-md p-4 min-w-[150px] z-50">
+                <li className="hover:text-blue-400 p-2 transition-colors cursor-pointer duration-300">
+                  <Link to={'/community/pc'}>Pc Game</Link>
+                </li>
+                <li className="hover:text-blue-400 p-2 transition-colors cursor-pointer duration-300">
+                  <Link to={'/community/pc'}>Mobile Game</Link>
+                </li>
+              </ul>
+            )}
+          </div>
+
+          <li className="hover:text-blue-400 transition-colors cursor-pointer duration-300">
+            Event
           </li>
-          <li className="hover:text-blue-400 transition-colors duration-300">
-            Products
+          <li className="hover:text-blue-400 transition-colors cursor-pointer duration-300">
+            Notice
           </li>
-          <li className="hover:text-blue-400 transition-colors duration-300">
-            News
-          </li>
-          <li className="hover:text-blue-400 transition-colors duration-300">
-            Forums
-          </li>
-          <li className="font-medium hover:text-blue-400 transition-colors duration-300">
-            Advertise
+          <li className="hover:text-blue-400 transition-colors cursor-pointer duration-300">
+            Timer
           </li>
         </ul>
 
