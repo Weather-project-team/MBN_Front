@@ -41,7 +41,7 @@ export default function Header() {
                   <Link to={'/community/pc'}>Pc Game</Link>
                 </li>
                 <li className="hover:text-blue-400 p-2 transition-colors cursor-pointer duration-300">
-                  <Link to={'/community/pc'}>Mobile Game</Link>
+                  <Link to={'/community/mobile'}>Mobile Game</Link>
                 </li>
               </ul>
             )}

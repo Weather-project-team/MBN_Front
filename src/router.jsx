@@ -10,7 +10,7 @@ const router = createBrowserRouter([
     element: <RootLayout />,
     children: [
       { index: true, element: <Home /> },
-      { path: '/community/pc', element: <Community /> },
+      { path: '/community/:platform', element: <Community /> },
     ],
   },
 ]);
