@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { Outlet } from 'react-router-dom';
 import Header from '../components/Header';
 
@@ -8,9 +7,14 @@ export default function RootLayout() {
       <Header />
 
       <main>
-        <Outlet />
+        <div className="max-w-screen-xl mx-auto px-4 py-6">
+          <Outlet />
+        </div>
       </main>
-      <footer>Footer</footer>
+
+      <footer className="border-t border-gray-300 mt-12 py-4 text-center text-sm text-gray-500">
+        ⓒ 2025 YourSite All rights reserved.
+      </footer>
     </div>
   );
 }

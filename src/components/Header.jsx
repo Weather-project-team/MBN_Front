@@ -4,7 +4,7 @@ import { useState } from 'react';
 export default function Header() {
   const [communityOpen, setCommunityOpen] = useState(false);
   return (
-    <header className="sticky top-0 z-50 bg-white shadow-sm">
+    <header className="sticky top-0 z-50 bg-white shadow-sm ">
       <div className="max-w-screen-xl mx-auto px-4 flex items-center justify-between h-16">
         {/* 왼쪽: 로고 + 검색 */}
         <div className="flex items-center gap-4">

@@ -1,21 +1,22 @@
-// src/routes/Community.jsx
 import { useParams, Navigate } from 'react-router-dom';
+import SideMenu from '../components/community/SideMenu';
+import Contents from '../components/community/Contents';
 
 export default function Community() {
   const { platform } = useParams();
 
-  // 허용된 플랫폼만 통과
   const validPlatforms = ['pc', 'mobile'];
-
-  // 유효하지 않으면 에러 페이지로 리다이렉트
   if (!validPlatforms.includes(platform)) {
     return <Navigate to="/error" replace />;
   }
 
   return (
-    <div>
-      <h1>{platform.toUpperCase()} Game Community</h1>
-      {/* 나머지 내용 */}
+    <div className="max-w-screen-xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-8 px-4">
+      {/* 좌측 콘텐츠 영역 */}
+      <Contents platform={platform} />
+
+      {/* 우측 아카이브 사이드바 */}
+      <SideMenu />
     </div>
   );
 }
