@@ -1,6 +1,6 @@
 export default function SideMenu() {
   return (
-    <aside className="lg:col-span-1 border-l border-gray-300 pl-6 text-sm">
+    <aside className="hidden lg:block lg:col-span-1 border-l border-gray-300 pl-6 text-sm">
       <h3 className="font-semibold mb-2">LAUNCH ARCHIVE</h3>
       <ul className="space-y-1">
         <li className="font-bold text-red-500">2025</li>

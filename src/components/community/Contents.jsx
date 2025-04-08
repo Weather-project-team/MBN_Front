@@ -1,3 +1,6 @@
+import { Link } from 'react-router-dom';
+import ContentsList from './ContentsList';
+
 export default function Contents({ platform }) {
   return (
     <div className="lg:col-span-3">
@@ -26,16 +29,20 @@ export default function Contents({ platform }) {
       </div>
 
       {/* 콘텐츠 리스트 자리 */}
-      <div className="mt-6">
-        <ul>
-          <li>
-            <span>제목</span>
-            <span>작성자</span>
-            <span>작성일</span>
-            <span>조회수</span>
-            <span>추천수</span>
-          </li>
+      <ContentsList />
+      <div className="relative">
+        <ul className="flex justify-center items-center gap-2 mt-4">
+          <li>1</li>
+          <li>2</li>
+          <li>3</li>
+          <li>4</li>
         </ul>
+        <Link
+          to={'/community/write'}
+          className="absolute top-0 right-0 bg-amber-500 p-2 rounded-lg"
+        >
+          create
+        </Link>
       </div>
     </div>
   );
