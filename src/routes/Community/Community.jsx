@@ -1,6 +1,6 @@
 import { useParams, Navigate } from 'react-router-dom';
-import SideMenu from '../components/community/SideMenu';
-import Contents from '../components/community/Contents';
+import Contents from '../../components/community/Contents';
+import SideMenu from '../../components/community/SideMenu';
 
 export default function Community() {
   const { platform } = useParams();

@@ -31,6 +31,15 @@ export default [
         version: 'detect',
       },
     },
+    env: {
+      browser: true,
+      es2021: true,
+    },
+    extends: ['eslint:recommended', 'plugin:react/recommended'],
+    parserOptions: {
+      ecmaVersion: 12,
+      sourceType: 'module',
+    },
     rules: {
       ...reactPlugin.configs.recommended.rules,
       ...reactHooksPlugin.configs.recommended.rules,
