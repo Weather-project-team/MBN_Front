@@ -1,19 +1,26 @@
-export default function ContentsList() {
+import { Link } from 'react-router-dom';
+
+export default function ContentsList({ posts, platform }) {
   return (
     <div className="mt-6">
-      <ul>
-        <li className="flex justify-between items-center text-sm font-semibold text-gray-700 border-b border-gray-300 py-2">
-          <span>작성일 | 제목</span>
-          <span>작성자 | 조회수 | 추천수</span>
-        </li>
-        <li className="flex justify-between items-center text-sm font-semibold text-gray-700 border-b border-gray-300 py-2">
-          <span>작성일 | 제목</span>
-          <span>작성자 | 조회수 | 추천수</span>
-        </li>
-        <li className="flex justify-between items-center text-sm font-semibold text-gray-700 border-b border-gray-300 py-2">
-          <span>작성일 | 제목</span>
-          <span>작성자 | 조회수 | 추천수</span>
-        </li>
+      <ul className=" text-xs lg:text-sm text-gray-500">
+        {posts.map((post) => {
+          return (
+            <li key={post.id} className="">
+              <Link
+                to={`/community/${platform}/${post.id}`}
+                className="flex justify-between items-center font-semibold text-gray-700 border-b border-gray-300 py-2"
+              >
+                <span>
+                  {post.createdAt} | {post.title}
+                </span>
+                <span>
+                  작성자 | {post.likeCount} | {post.viewCount}
+                </span>
+              </Link>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );

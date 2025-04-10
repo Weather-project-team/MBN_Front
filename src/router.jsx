@@ -4,6 +4,7 @@ import RootLayout from './layout/RootLayout';
 import Home from './routes/Home';
 import Community from './routes/Community/Community';
 import CommunityWrite from './routes/Community/CommunityWrite/CommunityWrite';
+import CommunityDetail from './routes/Community/CommunityDetail/CommunityDetail';
 
 const router = createBrowserRouter([
   {
@@ -13,6 +14,7 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: '/community/:platform', element: <Community /> },
       { path: '/community/write', element: <CommunityWrite /> },
+      { path: '/community/:platform/:id', element: <CommunityDetail /> },
     ],
   },
 ]);
