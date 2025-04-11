@@ -5,6 +5,7 @@ import Home from './routes/Home';
 import Community from './routes/Community/Community';
 import CommunityWrite from './routes/Community/CommunityWrite/CommunityWrite';
 import CommunityDetail from './routes/Community/CommunityDetail/CommunityDetail';
+import OAuthSuccessPage from './routes/OAuth/OAuthSuccessPage';
 
 const router = createBrowserRouter([
   {
@@ -15,6 +16,7 @@ const router = createBrowserRouter([
       { path: '/community/:platform', element: <Community /> },
       { path: '/community/write', element: <CommunityWrite /> },
       { path: '/community/:platform/:id', element: <CommunityDetail /> },
+      { path: '/oauth/callback/success', element: <OAuthSuccessPage /> },
     ],
   },
 ]);
