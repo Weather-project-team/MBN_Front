@@ -1,9 +1,14 @@
-export async function createPostApi(data) {
+export async function createPostApi(data, token) {
   console.log(`${import.meta.env.VITE_API_BASE_URL} url`);
+  console.log('data', data);
+  console.log('token', token);
   const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/posts`, {
     method: 'POST',
     body: JSON.stringify(data),
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
   });
   if (!res.ok) {
     throw new Error('Failed to create post');

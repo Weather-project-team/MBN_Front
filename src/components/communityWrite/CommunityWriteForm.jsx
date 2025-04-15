@@ -67,7 +67,10 @@ export default function CommunityWriteForm({
       <button className="flex items-center gap-1 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700">
         <AiOutlinePlus className="text-lg" /> Write
       </button>
-      <ImageUploadInput onImageSelect={handleImageSelect} />
+      <ImageUploadInput
+        initialUrls={writeInput.imageUrls}
+        onImageSelect={handleImageSelect}
+      />
     </form>
   );
 }

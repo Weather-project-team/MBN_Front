@@ -1,7 +1,31 @@
 import { Outlet } from 'react-router-dom';
 import Header from '../components/Header/Header';
+import { useRecoilState } from 'recoil';
+import { userState } from '../atoms/userAtom';
+import { useEffect } from 'react';
+import { getUser } from '../api/user/user';
 
 export default function RootLayout() {
+  const [user, setUser] = useRecoilState(userState);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+
+    console.log('token', token);
+    const fetchUser = async () => {
+      try {
+        const user = await getUser(token);
+        setUser(user); // ✅ 여기서 user는 실제 유저 객체
+      } catch (err) {
+        console.error('유저 정보 가져오기 실패:', err);
+      }
+    };
+
+    fetchUser(); // 🔥 호출
+  }, []);
+  console.log('user', user);
+
   return (
     <div className="overflow-x-hidden">
       <Header />
