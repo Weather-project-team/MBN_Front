@@ -1,8 +1,25 @@
 import { useState, useEffect } from 'react';
 
-export default function ImageUploadInput({ onImageSelect }) {
+export default function ImageUploadInput({ onImageSelect, initialUrls }) {
   const [previewUrls, setPreviewUrls] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
+
+  // ✅ 수정 모드일 때 초기 URL들 세팅
+  useEffect(() => {
+    if (initialUrls.length > 0) {
+      const previews = initialUrls.map((url) => ({
+        file: null, // File 객체는 없음
+        preview: `${import.meta.env.VITE_API_BASE_URL}${url}`, // 전체 URL로 만들어줌
+      }));
+      setPreviewUrls(previews);
+      setSelectedFiles(initialUrls); // 그대로 string 배열 유지
+
+      // 수정 모드에서는 업로드 안하므로, 그대로 전달
+      setTimeout(() => {
+        onImageSelect(initialUrls); // string URL 그대로 전달
+      }, 0);
+    }
+  }, [initialUrls, onImageSelect]);
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);

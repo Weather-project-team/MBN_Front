@@ -15,7 +15,7 @@ export default function ContentsList({ posts, platform }) {
                   {post.createdAt} | {post.title}
                 </span>
                 <span>
-                  작성자 | {post.likeCount} | {post.viewCount}
+                  {post.nickname} | {post.likeCount} | {post.viewCount}
                 </span>
               </Link>
             </li>

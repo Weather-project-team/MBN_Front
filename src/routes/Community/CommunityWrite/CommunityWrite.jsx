@@ -1,10 +1,16 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import CommunityWriteForm from '../../../components/communityWrite/CommunityWriteForm';
 import { uploadImages, createPostApi } from '../../../api/community/community';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { userState } from '../../../atoms/userAtom';
+import { editPostState } from '../../../atoms/editPostAtom';
 
 export default function CommunityWrite() {
   const navigate = useNavigate();
+  const id = useParams().id;
+  const editPost = useRecoilValue(editPostState);
+
   const [writeInput, setWriteInput] = useState({
     title: '',
     platform: '',
@@ -12,7 +18,23 @@ export default function CommunityWrite() {
     tag: '',
     imageUrls: [],
   });
-  console.log('writeInput', writeInput);
+  const token = localStorage.getItem('token');
+  useEffect(() => {
+    if (!token) {
+      alert('로그인 후 사용 가능합니다.');
+      navigate('/');
+    }
+
+    if (id && editPost) {
+      setWriteInput({
+        title: editPost.title,
+        platform: editPost.platform,
+        content: editPost.content,
+        tag: editPost.tag,
+        imageUrls: editPost.imageUrls,
+      });
+    }
+  }, [token, navigate]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -31,7 +53,7 @@ export default function CommunityWrite() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    const token = localStorage.getItem('token');
     try {
       const hasImages = writeInput.imageUrls && writeInput.imageUrls.length > 0;
 
@@ -42,13 +64,28 @@ export default function CommunityWrite() {
           : [], // ✅ 없으면 빈 배열
       };
 
-      await createPostApi(postData);
+      await createPostApi(postData, token);
       navigate('/community/pc');
     } catch (err) {
       console.error('업로드 또는 글쓰기 실패:', err);
       alert('문제가 발생했습니다. 다시 시도해주세요.');
     }
   };
+  if (id) {
+    return (
+      <div className="max-w-screen-xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-8 px-4">
+        <div className="col-span-3">
+          <h1 className="text-2xl font-bold mb-4">글 수정하기</h1>
+          <CommunityWriteForm
+            writeInput={writeInput}
+            onInputChange={handleInputChange}
+            onImageChange={handleImageChange} // ✅ 이미지 업데이트 콜백 추가
+            onSubmit={handleSubmit}
+          />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-screen-xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-8 px-4">
