@@ -1,70 +1,64 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
-export default function ImageUploadInput({ onImageSelect, initialUrls }) {
-  const [previewUrls, setPreviewUrls] = useState([]);
-  const [selectedFiles, setSelectedFiles] = useState([]);
+export default function ImageUploadInput({ onImageSelect, initialUrls = [] }) {
+  const [images, setImages] = useState([]); // [{ file, preview }]
+  const isInitialLoaded = useRef(false); // ✅ 최초 1회만 실행용
 
-  // ✅ 수정 모드일 때 초기 URL들 세팅
+  // ✅ 최초 마운트 시 초기 이미지 세팅
   useEffect(() => {
-    if (initialUrls.length > 0) {
-      const previews = initialUrls.map((url) => ({
-        file: null, // File 객체는 없음
-        preview: `${import.meta.env.VITE_API_BASE_URL}${url}`, // 전체 URL로 만들어줌
-      }));
-      setPreviewUrls(previews);
-      setSelectedFiles(initialUrls); // 그대로 string 배열 유지
+    if (!isInitialLoaded.current && initialUrls.length > 0) {
+      isInitialLoaded.current = true;
 
-      // 수정 모드에서는 업로드 안하므로, 그대로 전달
-      setTimeout(() => {
-        onImageSelect(initialUrls); // string URL 그대로 전달
-      }, 0);
+      const initial = initialUrls.map((url) => ({
+        file: url,
+        preview: url.startsWith('http')
+          ? url
+          : `${import.meta.env.VITE_API_BASE_URL}${url}`,
+      }));
+
+      setImages(initial);
+      onImageSelect(initial.map((img) => img.file));
     }
   }, [initialUrls, onImageSelect]);
 
+  // ✅ 이미지 추가
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
     if (!files.length) return;
 
-    const previews = files.map((file) => ({
+    const newImages = files.map((file) => ({
       file,
       preview: URL.createObjectURL(file),
     }));
 
-    const updatedFiles = [...selectedFiles, ...files];
-    const updatedPreviews = [...previewUrls, ...previews];
-
-    setSelectedFiles(updatedFiles);
-    setPreviewUrls(updatedPreviews);
-
-    // ✅ setState 직후에 실행
-    // 다음 렌더링 사이클에서 안전하게 실행됨
-    setTimeout(() => {
-      onImageSelect(updatedFiles);
-    }, 0);
+    const updated = [...images, ...newImages];
+    setImages(updated);
+    onImageSelect(updated.map((img) => img.file));
   };
 
+  // ✅ 이미지 삭제
   const handleRemoveImage = (index) => {
-    setSelectedFiles((prevFiles) => {
-      const newFiles = [...prevFiles];
-      newFiles.splice(index, 1);
-      onImageSelect(newFiles);
-      return newFiles;
-    });
+    const removed = images[index];
+    if (removed.file instanceof File && removed.preview.startsWith('blob:')) {
+      URL.revokeObjectURL(removed.preview);
+    }
 
-    setPreviewUrls((prevPreviews) => {
-      const newPreviews = [...prevPreviews];
-      URL.revokeObjectURL(newPreviews[index].preview);
-      newPreviews.splice(index, 1);
-      return newPreviews;
-    });
+    const updated = [...images];
+    updated.splice(index, 1);
+    setImages(updated);
+    onImageSelect(updated.map((img) => img.file));
   };
 
-  // 언마운트 시 미리보기 메모리 해제
+  // ✅ 언마운트 시 blob 정리
   useEffect(() => {
     return () => {
-      previewUrls.forEach(({ preview }) => URL.revokeObjectURL(preview));
+      images.forEach(({ preview }) => {
+        if (preview.startsWith('blob:')) {
+          URL.revokeObjectURL(preview);
+        }
+      });
     };
-  }, [previewUrls]);
+  }, [images]);
 
   return (
     <div className="mb-4">
@@ -84,7 +78,7 @@ export default function ImageUploadInput({ onImageSelect, initialUrls }) {
       />
 
       <div className="flex flex-wrap gap-4 mt-4">
-        {previewUrls.map(({ preview }, index) => (
+        {images.map(({ preview }, index) => (
           <div key={index} className="relative w-fit">
             <img
               src={preview}

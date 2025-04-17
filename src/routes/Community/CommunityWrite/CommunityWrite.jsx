@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
 import CommunityWriteForm from '../../../components/communityWrite/CommunityWriteForm';
-import { uploadImages, createPostApi } from '../../../api/community/community';
+import {
+  uploadImages,
+  createPostApi,
+  updatePostApi,
+} from '../../../api/community/community';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { userState } from '../../../atoms/userAtom';
@@ -54,17 +58,33 @@ export default function CommunityWrite() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
+
     try {
       const hasImages = writeInput.imageUrls && writeInput.imageUrls.length > 0;
 
-      const postData = {
-        ...writeInput,
-        imageUrls: hasImages
-          ? await uploadImages(writeInput.imageUrls) // ✅ 이미지 있을 때만 업로드
-          : [], // ✅ 없으면 빈 배열
-      };
+      if (id) {
+        // ✅ 수정 로직
+        const updatedData = {
+          ...writeInput,
+          imageUrls: writeInput.imageUrls, // 혼합된 상태 그대로 넘김 (string + File)
+        };
+        console.log(id, updatedData, token, '업데이트');
 
-      await createPostApi(postData, token);
+        await updatePostApi(id, updatedData, token);
+        alert('게시글이 수정되었습니다.');
+      } else {
+        // ✅ 새 글 작성 로직
+        const postData = {
+          ...writeInput,
+          imageUrls: hasImages
+            ? await uploadImages(writeInput.imageUrls) // 새 이미지 업로드
+            : [],
+        };
+
+        await createPostApi(postData, token);
+        alert('게시글이 등록되었습니다.');
+      }
+
       navigate('/community/pc');
     } catch (err) {
       console.error('업로드 또는 글쓰기 실패:', err);
