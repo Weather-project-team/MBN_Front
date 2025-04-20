@@ -5,8 +5,6 @@ import { useRecoilValue } from 'recoil';
 import { userState } from '../../atoms/userAtom';
 export default function Header() {
   const user = useRecoilValue(userState);
-
-  console.log('Header user:', user);
   return (
     <header className="sticky top-0 z-50 bg-white shadow-sm ">
       <div className="max-w-screen-xl mx-auto px-4 flex items-center justify-between h-16">

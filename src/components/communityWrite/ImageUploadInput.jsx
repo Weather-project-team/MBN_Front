@@ -77,9 +77,9 @@ export default function ImageUploadInput({ onImageSelect, initialUrls = [] }) {
         hover:file:bg-blue-100"
       />
 
-      <div className="flex flex-wrap gap-4 mt-4">
+      <div className="flex flex-nowrap overflow-x-auto scrollbar-hide scroll-smooth md:flex-wrap gap-4 mt-4">
         {images.map(({ preview }, index) => (
-          <div key={index} className="relative w-fit">
+          <div key={index} className="relative w-fit shrink-0">
             <img
               src={preview}
               alt={`미리보기 ${index}`}

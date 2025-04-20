@@ -7,7 +7,6 @@ import {
 } from '../../../api/community/community';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
-import { userState } from '../../../atoms/userAtom';
 import { editPostState } from '../../../atoms/editPostAtom';
 
 export default function CommunityWrite() {
