@@ -12,7 +12,6 @@ export default function RootLayout() {
     const token = localStorage.getItem('token');
     if (!token) return;
 
-    console.log('token', token);
     const fetchUser = async () => {
       try {
         const user = await getUser(token);
@@ -24,7 +23,6 @@ export default function RootLayout() {
 
     fetchUser(); // 🔥 호출
   }, []);
-  console.log('user', user);
 
   return (
     <div className="overflow-x-hidden">

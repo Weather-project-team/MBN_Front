@@ -1,16 +1,21 @@
 import { useEffect, useState } from 'react';
-import { getPostDetailApi } from '../../../api/community/community';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import {
+  deletePostApi,
+  getPostDetailApi,
+} from '../../../api/community/community';
+import { editPostState } from '../../../atoms/editPostAtom';
+import { userState } from '../../../atoms/userAtom';
+import Comment from '../../../components/communityDetail/Comment';
 import ImageSlider from '../../../components/communityDetail/ImageSlider';
 import { formatShortDate } from '../../../utils/formatDate';
-import { Link } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
-import { editPostState } from '../../../atoms/editPostAtom';
 
 export default function CommunityDetail() {
   const [post, setPost] = useState(null);
   const { id } = useParams();
-
+  const token = localStorage.getItem('token');
+  const user = useRecoilValue(userState);
   const setEditPost = useSetRecoilState(editPostState);
   const navigate = useNavigate();
   useEffect(() => {
@@ -20,7 +25,6 @@ export default function CommunityDetail() {
     };
     getPost();
   }, []);
-  console.log('post', post);
   if (!post) {
     return <div>Loading...</div>;
   }
@@ -32,11 +36,24 @@ export default function CommunityDetail() {
     imageUrls,
     likeCount,
     viewCount,
+    profileImageUrl,
   } = post;
 
   const handelEdit = () => {
     navigate(`/community/edit/${id}`);
     setEditPost(post);
+  };
+
+  const handleDelete = async () => {
+    deletePostApi(id, token)
+      .then(() => {
+        alert('게시글이 삭제되었습니다.');
+        navigate('/community/pc');
+      })
+      .catch((error) => {
+        console.error('Error deleting post:', error);
+        alert('게시글 삭제에 실패했습니다.');
+      });
   };
 
   return (
@@ -55,8 +72,15 @@ export default function CommunityDetail() {
         </button>
         <button className="bg-gray-300 px-4 py-2 rounded">댓글</button>
 
-        <button onClick={handelEdit}>수정하기</button>
+        {user?.id === post.authorId && (
+          <div>
+            <button onClick={handelEdit}>수정하기</button>
+            <button onClick={handleDelete}>삭제하기</button>
+          </div>
+        )}
       </div>
+
+      <Comment postId={id} />
     </div>
   );
 }

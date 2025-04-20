@@ -1,7 +1,4 @@
 export async function createPostApi(data, token) {
-  console.log(`${import.meta.env.VITE_API_BASE_URL} url`);
-  console.log('data', data);
-  console.log('token', token);
   const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/posts`, {
     method: 'POST',
     body: JSON.stringify(data),
@@ -102,4 +99,30 @@ export async function updatePostApi(postId, data, token) {
 
   const result = await res.text(); // 현재 컨트롤러는 "게시글 수정 완료" 텍스트 반환 중
   return result;
+}
+
+export async function deletePostApi(postId, token) {
+  const res = await fetch(
+    `${import.meta.env.VITE_API_BASE_URL}/posts/${postId}`,
+    {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    }
+  );
+
+  if (!res.ok) {
+    const errText = await res.text(); // json 대신 text로 받아
+    throw new Error(`게시글 삭제 실패: ${errText}`);
+  }
+
+  // 만약 서버에서 본문 없이 응답하면 여기서 에러 방지
+  try {
+    const result = await res.json();
+    return result;
+  } catch (e) {
+    return { message: '삭제 완료' }; // 대체 응답
+  }
 }

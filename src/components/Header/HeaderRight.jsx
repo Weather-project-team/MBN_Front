@@ -45,10 +45,6 @@ export default function HeaderRight() {
         {user ? (
           <>
             <button className="text-xl">🔔</button>
-            {console.log(
-              '👀 이미지 경로:',
-              `${import.meta.env.VITE_API_BASE_URL}${user.profileImageUrl}`
-            )}
             <img
               src={`${import.meta.env.VITE_API_BASE_URL}${user.profileImageUrl}`}
               alt="user"
