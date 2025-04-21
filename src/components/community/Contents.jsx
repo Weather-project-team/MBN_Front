@@ -1,9 +1,9 @@
-import { Link } from 'react-router-dom';
-import ContentsList from './ContentsList';
 import { AiOutlinePlus } from 'react-icons/ai';
-import ContentsTab from './ContentsTab';
+import { Link } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { userState } from '../../atoms/userAtom';
+import ContentsList from './ContentsList';
+import ContentsTab from './ContentsTab';
 
 export default function Contents({ platform, posts }) {
   const user = useRecoilValue(userState);

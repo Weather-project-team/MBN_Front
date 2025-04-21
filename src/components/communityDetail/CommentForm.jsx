@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { createCommentApi } from '../../api/comment/comment';
 
-export default function CommentForm({ postId, onCommentSubmit }) {
+export default function CommentForm({ postId, fetchComments }) {
   const [content, setContent] = useState('');
   const token = localStorage.getItem('token');
 
@@ -14,7 +14,7 @@ export default function CommentForm({ postId, onCommentSubmit }) {
     try {
       await createCommentApi(formData, token);
       setContent('');
-      onCommentSubmit(); // 💥 댓글 다시 불러오기 요청!
+      fetchComments(); // 💥 댓글 다시 불러오기 요청!
     } catch (err) {
       console.error(err);
     }

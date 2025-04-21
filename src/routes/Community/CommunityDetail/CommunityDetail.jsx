@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
+import { AiOutlineLike } from 'react-icons/ai';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import {
   deletePostApi,
   getPostDetailApi,
 } from '../../../api/community/community';
+import toggleLikeApi from '../../../api/community/communityAction';
 import { editPostState } from '../../../atoms/editPostAtom';
 import { userState } from '../../../atoms/userAtom';
 import Comment from '../../../components/communityDetail/Comment';
@@ -18,11 +20,11 @@ export default function CommunityDetail() {
   const user = useRecoilValue(userState);
   const setEditPost = useSetRecoilState(editPostState);
   const navigate = useNavigate();
+  const getPost = async () => {
+    const res = await getPostDetailApi(id);
+    setPost(res);
+  };
   useEffect(() => {
-    const getPost = async () => {
-      const res = await getPostDetailApi(id);
-      setPost(res);
-    };
     getPost();
   }, []);
   if (!post) {
@@ -56,26 +58,52 @@ export default function CommunityDetail() {
       });
   };
 
+  const toggleLikes = async () => {
+    toggleLikeApi(id, token)
+      .then(() => {
+        getPost();
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
   return (
     <div>
       <h1 className="text-2xl font-bold mb-4">{title}</h1>
-      <div className="text-gray-500 mb-4">
-        작성자: {nickname} | 작성일: {formatShortDate(createdAt)}
+      <div className="text-gray-500 mb-4 text-sm">
+        {nickname} | Posted on : {formatShortDate(createdAt)} | Views :{' '}
+        {viewCount}
       </div>
 
       {imageUrls.length > 0 && <ImageSlider imageUrls={imageUrls} />}
 
       <div className="mb-4">{content}</div>
-      <div className="flex gap-2">
-        <button className="bg-blue-500 text-white px-4 py-2 rounded">
-          좋아요{likeCount}
+      <div className="flex gap-2 justify-between">
+        <button
+          onClick={toggleLikes}
+          className="bg-gray-500 flex items-center text-white px-4 py-2 rounded hover:bg-blue-500"
+        >
+          Likes
+          <AiOutlineLike className="ml-2 mr-2" />
+          {likeCount}
+          {/* <AiFillLike/> */}
         </button>
-        <button className="bg-gray-300 px-4 py-2 rounded">댓글</button>
 
         {user?.id === post.authorId && (
           <div>
-            <button onClick={handelEdit}>수정하기</button>
-            <button onClick={handleDelete}>삭제하기</button>
+            <button
+              className="bg-blue-500 px-4 py-2 rounded text-white"
+              onClick={handelEdit}
+            >
+              Edit
+            </button>
+            <button
+              className="bg-red-500 px-4 py-2 rounded text-white ml-4"
+              onClick={handleDelete}
+            >
+              Delete
+            </button>
           </div>
         )}
       </div>
