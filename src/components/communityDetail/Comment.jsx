@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
+import { getAllCommentsApi } from '../../api/comment/comment';
 import CommentForm from './CommentForm';
 import CommentList from './CommentList';
-import { getAllCommentsApi } from '../../api/comment/comment';
 
 export default function Comment({ postId }) {
   const [comments, setComments] = useState([]);
@@ -20,8 +20,12 @@ export default function Comment({ postId }) {
   }, [postId]);
   return (
     <>
-      <CommentForm postId={postId} onCommentSubmit={fetchComments} />
-      <CommentList comments={comments} postId={postId} />
+      <CommentForm postId={postId} fetchComments={fetchComments} />
+      <CommentList
+        comments={comments}
+        postId={postId}
+        fetchComments={fetchComments}
+      />
     </>
   );
 }
