@@ -64,8 +64,7 @@ export async function updatePostApi(postId, data, token) {
   const dto = {
     title: data.title,
     content: data.content,
-    platform: data.platform,
-    tag: data.tag,
+    category: data.category,
     existingImageUrls: data.imageUrls.filter((img) => typeof img === 'string'),
   };
 

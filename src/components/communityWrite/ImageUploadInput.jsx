@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export default function ImageUploadInput({ onImageSelect, initialUrls = [] }) {
   const [images, setImages] = useState([]); // [{ file, preview }]
@@ -9,12 +9,26 @@ export default function ImageUploadInput({ onImageSelect, initialUrls = [] }) {
     if (!isInitialLoaded.current && initialUrls.length > 0) {
       isInitialLoaded.current = true;
 
-      const initial = initialUrls.map((url) => ({
-        file: url,
-        preview: url.startsWith('http')
-          ? url
-          : `${import.meta.env.VITE_API_BASE_URL}${url}`,
-      }));
+      const initial = initialUrls.map((item) => {
+        if (typeof item === 'string') {
+          return {
+            file: item,
+            preview: item.startsWith('http')
+              ? item
+              : `${import.meta.env.VITE_API_BASE_URL}${item}`,
+          };
+        }
+
+        if (item instanceof File) {
+          return {
+            file: item,
+            preview: URL.createObjectURL(item), // ✅ File 객체 처리
+          };
+        }
+
+        console.warn('지원하지 않는 타입:', item);
+        return { file: item, preview: '' };
+      });
 
       setImages(initial);
       onImageSelect(initial.map((img) => img.file));
