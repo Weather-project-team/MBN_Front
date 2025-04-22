@@ -1,6 +1,5 @@
 import { AiOutlinePlus } from 'react-icons/ai';
 import ImageUploadInput from './ImageUploadInput';
-import { useState } from 'react';
 
 export default function CommunityWriteForm({
   writeInput,
@@ -32,19 +31,21 @@ export default function CommunityWriteForm({
 
       <div className="mb-4">
         <label
-          htmlFor="platform"
+          htmlFor="category"
           className="block text-sm font-medium text-gray-700"
         >
-          플랫폼
+          카테고리
         </label>
-        <input
+        <select
+          className="mt-1 block border p-2 rounded-md shadow-sm"
+          name="category"
+          id="category"
           onChange={onInputChange}
-          type="text"
-          id="platform"
-          name="platform"
-          value={writeInput.platform}
-          className="mt-1 block w-full border p-2 rounded-md shadow-sm"
-        />
+          value={writeInput.category}
+        >
+          <option>pc</option>
+          <option>mobile</option>
+        </select>
       </div>
 
       <div className="mb-4">

@@ -1,5 +1,5 @@
-import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
 import { useState } from 'react';
+import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 
 export default function HeaderCenter() {
@@ -63,7 +63,7 @@ export default function HeaderCenter() {
         Notice
       </li>
       <li className="hover:text-blue-400 transition-colors cursor-pointer duration-300">
-        Timer
+        <Link to="/timer">Timer</Link>
       </li>
     </ul>
   );

@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
-import CommunityWriteForm from '../../../components/communityWrite/CommunityWriteForm';
-import {
-  uploadImages,
-  createPostApi,
-  updatePostApi,
-} from '../../../api/community/community';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
+import {
+  createPostApi,
+  updatePostApi,
+  uploadImages,
+} from '../../../api/community/community';
 import { editPostState } from '../../../atoms/editPostAtom';
+import CommunityWriteForm from '../../../components/communityWrite/CommunityWriteForm';
 
 export default function CommunityWrite() {
   const navigate = useNavigate();
@@ -16,11 +16,11 @@ export default function CommunityWrite() {
 
   const [writeInput, setWriteInput] = useState({
     title: '',
-    platform: '',
+    category: 'pc',
     content: '',
-    tag: '',
     imageUrls: [],
   });
+  console.log(writeInput);
   const token = localStorage.getItem('token');
   useEffect(() => {
     if (!token) {
@@ -31,9 +31,8 @@ export default function CommunityWrite() {
     if (id && editPost) {
       setWriteInput({
         title: editPost.title,
-        platform: editPost.platform,
+        category: editPost.category,
         content: editPost.content,
-        tag: editPost.tag,
         imageUrls: editPost.imageUrls,
       });
     }
@@ -73,6 +72,8 @@ export default function CommunityWrite() {
         alert('게시글이 수정되었습니다.');
       } else {
         // ✅ 새 글 작성 로직
+        console.log('🔍 이미지 업로드 시도 중:', writeInput.imageUrls);
+
         const postData = {
           ...writeInput,
           imageUrls: hasImages

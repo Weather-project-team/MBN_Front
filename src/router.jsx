@@ -1,12 +1,13 @@
 // src/router/index.jsx
 import { createBrowserRouter } from 'react-router-dom';
 import RootLayout from './layout/RootLayout';
-import Home from './routes/Home';
 import Community from './routes/Community/Community';
-import CommunityWrite from './routes/Community/CommunityWrite/CommunityWrite';
 import CommunityDetail from './routes/Community/CommunityDetail/CommunityDetail';
-import OAuthSuccessPage from './routes/OAuth/OAuthSuccessPage';
+import CommunityWrite from './routes/Community/CommunityWrite/CommunityWrite';
+import Home from './routes/Home';
 import MyPage from './routes/mypage/MyPage';
+import OAuthSuccessPage from './routes/OAuth/OAuthSuccessPage';
+import Timer from './routes/Timer/Timer';
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,8 @@ const router = createBrowserRouter([
       { path: '/community/write', element: <CommunityWrite /> },
       { path: '/community/edit/:id', element: <CommunityWrite /> },
       { path: '/community/:platform/:id', element: <CommunityDetail /> },
+
+      { path: '/timer', element: <Timer /> },
 
       { path: '/mypage', element: <MyPage /> },
 
