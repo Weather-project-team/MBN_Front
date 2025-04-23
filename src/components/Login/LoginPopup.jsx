@@ -1,6 +1,6 @@
 export default function LoginPopup({ onClose }) {
   const handleKakaoLogin = async () => {
-    const res = await fetch('http://localhost:9001/oauth/kakao');
+    const res = await fetch('http://116.34.191.73:3334/oauth/kakao');
     const loginUrl = await res.text();
     window.location.href = loginUrl;
   };
