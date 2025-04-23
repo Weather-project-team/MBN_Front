@@ -5,7 +5,7 @@ import { defineConfig } from 'vite';
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  base: './', // ✅ 이것 추가
+  base: '/', // ✅ 이것 추가
   server: {
     historyApiFallBack: true,
   },

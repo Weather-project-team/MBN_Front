@@ -1,10 +1,10 @@
-// src/pages/OAuthSuccessPage.tsx
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export default function OAuthSuccessPage() {
   const navigate = useNavigate();
 
+  console.log('123');
   useEffect(() => {
     const token = new URL(window.location.href).searchParams.get('token');
 
