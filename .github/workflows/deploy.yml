@@ -21,9 +21,9 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Set VITE_BASE_URL and Build
+      - name: Set VITE_API_BASE_URL and Build
         run: |
-          echo "VITE_BASE_URL=${{ secrets.VITE_BASE_URL }}" >> .env.local
+          echo "VITE_API_BASE_URL=${{ secrets.VITE_API_BASE_URL }}" >> .env.local
           npm run build
 
       - name: Show built files for debug
