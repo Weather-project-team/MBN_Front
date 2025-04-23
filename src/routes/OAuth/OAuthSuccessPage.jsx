@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function OAuthSuccessPage() {
   const navigate = useNavigate();
+  console.log('asdf');
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
