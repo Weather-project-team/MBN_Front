@@ -49,8 +49,5 @@ jobs:
           port: 8807
           script: |
             cd /home/haegi/mbn-front
-            rm -rf dist
-            mv dist dist_temp
-            mv dist_temp dist
             pm2 delete mbn-front || true
             pm2 serve dist 3333 --name "mbn-front"
