@@ -21,37 +21,20 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Inject VITE_BASE_URL into .env.local
-        run: |
-          echo "VITE_BASE_URL=${{ secrets.VITE_BASE_URL }}" > .env.local
+      - name: Build Vite App with VITE_BASE_URL
+        run: VITE_BASE_URL=${{ secrets.VITE_BASE_URL }} npm run build
 
-      - name: Build Vite App
-        run: npm run build
-
-      - name: Check dist directory (for debug)
-        run: ls -al dist
-
-      - name: Create target directory on server
-        uses: appleboy/ssh-action@v1.0.0
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          port: 8807
-          script: |
-            mkdir -p /home/haegi/mbn-front/dist
-
-      - name: Upload dist files to server
+      - name: Upload build via SCP
         uses: appleboy/scp-action@v0.1.3
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           port: 8807
-          source: 'dist/**'
+          source: 'dist/*'
           target: '/home/haegi/mbn-front/dist'
 
-      - name: Restart frontend with PM2
+      - name: Restart app with PM2
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -61,5 +44,4 @@ jobs:
           script: |
             cd /home/haegi/mbn-front
             pm2 delete mbn-front || true
-            pm2 serve dist 3333 --spa --name "mbn-front"
-            pm2 save
+            pm2 serve dist 3333 --name "mbn-front"
