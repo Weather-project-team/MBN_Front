@@ -30,7 +30,7 @@ export default function HeaderCenter() {
           <ul className="absolute top-full left-1/2 -translate-x-1/2 bg-white shadow-lg rounded-md p-4 min-w-[150px] z-50">
             <li className="hover:text-blue-400 p-2 transition-colors cursor-pointer duration-300">
               <Link
-                to="/community/pc"
+                to="/community?category=pc"
                 onClick={() => {
                   if (window.innerWidth < 768) {
                     setCommunityOpen(false); // 모바일에서 닫기
@@ -42,7 +42,7 @@ export default function HeaderCenter() {
             </li>
             <li className="hover:text-blue-400 p-2 transition-colors cursor-pointer duration-300">
               <Link
-                to="/community/mobile"
+                to="/community?category=mobile"
                 onClick={() => {
                   if (window.innerWidth < 768) {
                     setCommunityOpen(false); // 모바일에서 닫기
@@ -57,11 +57,12 @@ export default function HeaderCenter() {
       </div>
 
       <li className="hover:text-blue-400 transition-colors cursor-pointer duration-300">
-        Event
+        <Link to="/community?category=event">Event</Link>
       </li>
       <li className="hover:text-blue-400 transition-colors cursor-pointer duration-300">
-        Notice
+        <Link to="/community?category=notice">Notice</Link>
       </li>
+
       <li className="hover:text-blue-400 transition-colors cursor-pointer duration-300">
         <Link to="/timer">Timer</Link>
       </li>

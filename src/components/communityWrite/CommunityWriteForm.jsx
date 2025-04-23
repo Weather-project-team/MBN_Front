@@ -1,4 +1,6 @@
 import { AiOutlinePlus } from 'react-icons/ai';
+import { useRecoilValue } from 'recoil';
+import { userState } from '../../atoms/userAtom';
 import ImageUploadInput from './ImageUploadInput';
 
 export default function CommunityWriteForm({
@@ -7,9 +9,11 @@ export default function CommunityWriteForm({
   onSubmit,
   onImageChange,
 }) {
+  const user = useRecoilValue(userState);
   const handleImageSelect = (files) => {
     onImageChange(files); // ✅ 부모에게 파일 전달
   };
+  console.log(user);
   return (
     <form onSubmit={onSubmit}>
       <div className="mb-4">
@@ -45,6 +49,12 @@ export default function CommunityWriteForm({
         >
           <option>pc</option>
           <option>mobile</option>
+          {user?.rule === 'admin' ? (
+            <>
+              <option>notice</option>
+              <option>event</option>
+            </>
+          ) : null}
         </select>
       </div>
 

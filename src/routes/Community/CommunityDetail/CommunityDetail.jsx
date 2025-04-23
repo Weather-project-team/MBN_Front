@@ -39,6 +39,7 @@ export default function CommunityDetail() {
     likeCount,
     viewCount,
     profileImageUrl,
+    category,
   } = post;
 
   const handelEdit = () => {
@@ -50,7 +51,7 @@ export default function CommunityDetail() {
     deletePostApi(id, token)
       .then(() => {
         alert('게시글이 삭제되었습니다.');
-        navigate('/community/pc');
+        navigate(`/community?category=${category}`);
       })
       .catch((error) => {
         console.error('Error deleting post:', error);

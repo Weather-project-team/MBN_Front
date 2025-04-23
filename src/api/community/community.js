@@ -14,16 +14,28 @@ export async function createPostApi(data, token) {
   return result;
 }
 
-export async function getAllPostsApi() {
-  const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/posts`, {
+// Posts GET
+export async function getAllPostsApi({ category, page, size, sort }) {
+  const baseUrl = import.meta.env.VITE_API_BASE_URL;
+
+  const queryParams = new URLSearchParams();
+  if (category) queryParams.append('category', category);
+  queryParams.append('page', page);
+  queryParams.append('size', size);
+  queryParams.append('sort', sort);
+
+  const url = `${baseUrl}/posts?${queryParams.toString()}`;
+
+  const res = await fetch(url, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
   });
+
   if (!res.ok) {
     throw new Error('Failed to fetch posts');
   }
-  const posts = await res.json();
-  return posts;
+
+  return await res.json(); // Page<Post> 형태
 }
 
 export async function getPostDetailApi(id) {
@@ -124,4 +136,21 @@ export async function deletePostApi(postId, token) {
   } catch (e) {
     return { message: '삭제 완료' }; // 대체 응답
   }
+}
+
+// search
+export async function searchPostsApi(keyword) {
+  const res = await fetch(
+    `${import.meta.env.VITE_API_BASE_URL}/posts/search?keyword=${keyword}`,
+    {
+      method: 'GET',
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error('검색 실패!'); // <-- `throw` 해야 에러 처리가 제대로 돼
+  }
+
+  const result = await res.json(); // <-- `await` 빠졌음
+  return result;
 }

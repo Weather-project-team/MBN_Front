@@ -85,7 +85,7 @@ export default function CommunityWrite() {
         alert('게시글이 등록되었습니다.');
       }
 
-      navigate('/community/pc');
+      navigate(`/community?category=${writeInput.category}`);
     } catch (err) {
       console.error('업로드 또는 글쓰기 실패:', err);
       alert('문제가 발생했습니다. 다시 시도해주세요.');
