@@ -3,7 +3,7 @@ name: Deploy Frontend
 on:
   push:
     branches:
-      - haegi # 네 브랜치 이름에 맞게 유지
+      - haegi # 사용 중인 브랜치명
 
 jobs:
   deploy:
@@ -24,7 +24,7 @@ jobs:
       - name: Build Vite App
         run: npm run build
 
-      - name: Upload build via SCP
+      - name: Copy build files to server via SSH
         uses: appleboy/scp-action@v0.1.3
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -32,10 +32,10 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: 8807
           source: 'dist/*'
-          target: '/home/haegi/mbn-front/dist'
+          target: '/home/haegi/mbn-front'
 
-      - name: Restart app with PM2
-        uses: appleboy/ssh-action@v1.0.0
+      - name: Start app with PM2 on server
+        uses: appleboy/ssh-action@v0.1.10
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
@@ -44,4 +44,5 @@ jobs:
           script: |
             cd /home/haegi/mbn-front
             pm2 delete mbn-front || true
-            pm2 serve dist 6000 --name "mbn-front"
+            pm2 start npm --name "mbn-front" -- run preview -- --port 3333 --host
+            pm2 save
