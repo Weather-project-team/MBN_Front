@@ -1,9 +1,10 @@
+# .github/workflows/deploy-frontend.yml
 name: Deploy Frontend
 
 on:
   push:
     branches:
-      - haegi
+      - haegi # 너가 사용하는 브랜치 이름으로 유지
 
 jobs:
   deploy:
@@ -22,7 +23,12 @@ jobs:
         run: npm install
 
       - name: Build Vite App with VITE_BASE_URL
-        run: VITE_BASE_URL=${{ secrets.VITE_BASE_URL }} npm run build
+        run: |
+          echo "VITE_BASE_URL=${{ secrets.VITE_BASE_URL }}" >> .env
+          npm run build
+
+      - name: Show built files for debug
+        run: ls -al dist
 
       - name: Upload build via SCP
         uses: appleboy/scp-action@v0.1.3
@@ -31,7 +37,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           port: 8807
-          source: 'dist/*'
+          source: 'dist/**'
           target: '/home/haegi/mbn-front/dist'
 
       - name: Restart app with PM2
@@ -43,5 +49,8 @@ jobs:
           port: 8807
           script: |
             cd /home/haegi/mbn-front
+            rm -rf dist
+            mv dist dist_temp
+            mv dist_temp dist
             pm2 delete mbn-front || true
             pm2 serve dist 3333 --name "mbn-front"
