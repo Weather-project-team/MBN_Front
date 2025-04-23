@@ -1,5 +1,5 @@
 export default function LoginPopup({ onClose }) {
-  const baseUrl = import.meta.env.VITE_BASE_URL;
+  const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
   const handleKakaoLogin = async () => {
     const res = await fetch(`${baseUrl}/oauth/kakao`);
@@ -14,7 +14,7 @@ export default function LoginPopup({ onClose }) {
         <div className="flex flex-col gap-4">
           <button
             onClick={handleKakaoLogin}
-            className="bg-yellow-400 text-white px-4 py-2 rounded"
+            className="bg-yellow-400 cursor-pointer text-white px-4 py-2 rounded"
           >
             Kakao Login
           </button>

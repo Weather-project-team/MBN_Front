@@ -10,7 +10,7 @@ export default function Community() {
   const [searchParams] = useSearchParams();
 
   const [period, setPeriod] = useState('daily'); // 'daily', 'weekly', 'monthly'
-  const [sort, setSort] = useState('likeCount,desc'); // 또는 'viewCount,desc'
+  const [sort, setSort] = useState('createdAt,desc'); // 또는 'viewCount,desc'
 
   const [page, setPage] = useState(0); // 0-based
   const [postsData, setPostsData] = useState(null);

@@ -17,6 +17,9 @@ export default function Contents({
   setSort,
 }) {
   const user = useRecoilValue(userState);
+  const isGameCategory =
+    category !== 'notice' && category !== 'event' && category !== 'search';
+
   return (
     <div className="lg:col-span-3">
       {/* 제목 */}
@@ -50,7 +53,7 @@ export default function Contents({
         </ul>
 
         {/* 작성 버튼 */}
-        {user ? (
+        {user && isGameCategory ? (
           <Link
             to="/community/write"
             className="absolute top-0 right-0 bg-blue-500 text-white font-medium px-3 py-1.5 rounded-md hover:bg-amber-600 transition flex items-center gap-1"
