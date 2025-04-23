@@ -3,7 +3,7 @@ name: Deploy Frontend
 on:
   push:
     branches:
-      - haegi # 네 브랜치 이름에 맞게 유지
+      - haegi
 
 jobs:
   deploy:
@@ -13,9 +13,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set environment variables
-        run: echo "VITE_BASE_URL=${{ secrets.VITE_BASE_URL }}" >> .env.local
-
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
@@ -24,8 +21,8 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build Vite App
-        run: npm run build
+      - name: Build Vite App with VITE_BASE_URL
+        run: VITE_BASE_URL=${{ secrets.VITE_BASE_URL }} npm run build
 
       - name: Upload build via SCP
         uses: appleboy/scp-action@v0.1.3

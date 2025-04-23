@@ -1,9 +1,12 @@
 export default function LoginPopup({ onClose }) {
+  const baseUrl = import.meta.env.VITE_BASE_URL;
+
   const handleKakaoLogin = async () => {
-    const res = await fetch('http://116.34.191.73:3334/oauth/kakao');
+    const res = await fetch(`${baseUrl}/oauth/kakao`);
     const loginUrl = await res.text();
     window.location.href = loginUrl;
   };
+
   return (
     <div className="fixed w-full h-full top-0 left-0 bg-black/50 flex justify-center items-center">
       <div className="bg-white w-96 h-96 rounded-lg flex flex-col justify-center items-center">
