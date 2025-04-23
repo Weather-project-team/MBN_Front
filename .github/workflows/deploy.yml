@@ -23,8 +23,11 @@ jobs:
 
       - name: Build Vite App with VITE_BASE_URL
         run: |
-          echo "VITE_BASE_URL=${{ secrets.VITE_BASE_URL }}" >> .env
+          echo "VITE_BASE_URL=${{ secrets.VITE_BASE_URL }}" >> .env.production
           npm run build
+
+      - name: Show built files for debug
+        run: ls -al dist
 
       - name: Create deploy directory on server
         uses: appleboy/ssh-action@v1.0.0
@@ -43,7 +46,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           port: 8807
-          source: 'dist/**'
+          source: 'dist/*'
           target: '/home/haegi/mbn-front/dist'
 
       - name: Restart app with PM2 and SPA routing
