@@ -10,7 +10,7 @@ export default function OAuthSuccessPage() {
 
     if (token) {
       localStorage.setItem('token', token);
-      navigate('/'); // 메인 페이지로 이동
+      navigate('/', { replace: true });
     }
   }, []);
 
