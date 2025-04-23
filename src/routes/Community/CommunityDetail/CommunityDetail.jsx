@@ -79,7 +79,7 @@ export default function CommunityDetail() {
 
       {imageUrls.length > 0 && <ImageSlider imageUrls={imageUrls} />}
 
-      <div className="mb-4">{content}</div>
+      <div className="mb-4 whitespace-pre-line">{content}</div>
       <div className="flex gap-2 justify-between">
         <button
           onClick={toggleLikes}
