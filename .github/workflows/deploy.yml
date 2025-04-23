@@ -13,6 +13,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Set environment variables
+        run: echo "VITE_BASE_URL=${{ secrets.VITE_BASE_URL }}" >> .env.local
+
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
