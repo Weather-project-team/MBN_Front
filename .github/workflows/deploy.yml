@@ -3,7 +3,7 @@ name: Deploy Frontend
 on:
   push:
     branches:
-      - haegi # 또는 너가 사용하는 브랜치
+      - haegi # 네 브랜치 이름에 맞게 유지
 
 jobs:
   deploy:
@@ -21,18 +21,27 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build React App
+      - name: Build Vite App
         run: npm run build
 
-      - name: Deploy to Server via SSH
+      - name: Upload build via SCP
         uses: appleboy/scp-action@v0.1.3
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
-          port: 8807 # ← 이거 추가
-          source: 'dist/*' # 또는 "build/*" → Vite냐 CRA냐에 따라
-          target: '/home/haegi/mbn-front' # 너의 서버 경로에 맞게 수정
+          port: 8807
+          source: 'dist/*'
+          target: '/home/haegi/mbn-front/dist'
 
-# 예: 코멘트 하나 추가
-# This workflow deploys frontend via SSH
+      - name: Restart app with PM2
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: 8807
+          script: |
+            cd /home/haegi/mbn-front
+            pm2 delete mbn-front || true
+            pm2 serve dist 6000 --name "mbn-front"
