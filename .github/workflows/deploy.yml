@@ -21,15 +21,17 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build Vite App with VITE_BASE_URL
+      - name: Inject VITE_BASE_URL into .env.local
         run: |
-          echo "VITE_BASE_URL=${{ secrets.VITE_BASE_URL }}" >> .env.production
-          npm run build
+          echo "VITE_BASE_URL=${{ secrets.VITE_BASE_URL }}" > .env.local
 
-      - name: Show built files for debug
+      - name: Build Vite App
+        run: npm run build
+
+      - name: Check dist directory (for debug)
         run: ls -al dist
 
-      - name: Create deploy directory on server
+      - name: Create target directory on server
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -39,17 +41,17 @@ jobs:
           script: |
             mkdir -p /home/haegi/mbn-front/dist
 
-      - name: Upload build via SCP
+      - name: Upload dist files to server
         uses: appleboy/scp-action@v0.1.3
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           port: 8807
-          source: 'dist/*'
+          source: 'dist/**'
           target: '/home/haegi/mbn-front/dist'
 
-      - name: Restart app with PM2 and SPA routing
+      - name: Restart frontend with PM2
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SSH_HOST }}
