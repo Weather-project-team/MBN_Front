@@ -30,6 +30,7 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
+          port: 8807 # ← 이거 추가
           source: 'dist/*' # 또는 "build/*" → Vite냐 CRA냐에 따라
           target: '/home/haegi/mbn-front' # 너의 서버 경로에 맞게 수정
 
