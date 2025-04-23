@@ -5,23 +5,51 @@ import { userState } from '../../atoms/userAtom';
 import ContentsList from './ContentsList';
 import ContentsTab from './ContentsTab';
 
-export default function Contents({ platform, posts }) {
+export default function Contents({
+  category,
+  posts,
+  page,
+  setPage,
+  totalPages,
+  period,
+  setPeriod,
+  sort,
+  setSort,
+}) {
   const user = useRecoilValue(userState);
   return (
     <div className="lg:col-span-3">
       {/* 제목 */}
+      <ContentsTab
+        category={category}
+        period={period}
+        setPeriod={setPeriod}
+        sort={sort}
+        setSort={setSort}
+      />
 
-      <ContentsTab platform={platform} />
+      {/* 콘텐츠 리스트 */}
+      <ContentsList category={category} posts={posts} />
 
-      {/* 콘텐츠 리스트 자리 */}
-      <ContentsList platform={platform} posts={posts} />
+      {/* 페이지네이션 */}
       <div className="relative">
         <ul className="flex justify-center items-center gap-2 mt-4">
-          <li>1</li>
-          <li>2</li>
-          <li>3</li>
-          <li>4</li>
+          {Array.from({ length: totalPages }, (_, i) => (
+            <li
+              key={i}
+              onClick={() => setPage(i)}
+              className={`cursor-pointer px-3 py-1 rounded ${
+                page === i
+                  ? 'bg-blue-500 text-white font-semibold'
+                  : 'bg-gray-100 hover:bg-blue-100'
+              }`}
+            >
+              {i + 1}
+            </li>
+          ))}
         </ul>
+
+        {/* 작성 버튼 */}
         {user ? (
           <Link
             to="/community/write"

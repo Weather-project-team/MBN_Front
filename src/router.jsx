@@ -15,10 +15,12 @@ const router = createBrowserRouter([
     element: <RootLayout />,
     children: [
       { index: true, element: <Home /> },
-      { path: '/community/:platform', element: <Community /> },
+      { path: '/community', element: <Community /> },
       { path: '/community/write', element: <CommunityWrite /> },
       { path: '/community/edit/:id', element: <CommunityWrite /> },
       { path: '/community/:platform/:id', element: <CommunityDetail /> },
+
+      { path: '/search', element: <Community /> },
 
       { path: '/timer', element: <Timer /> },
 
